@@ -2,9 +2,9 @@
 
 高中三年校园影像的时间线与分类导览，共收录 139 个视频、310 个分集。
 
-## 在线访问
+## 部署
 
-GitHub Pages 部署地址：https://panini-pig.github.io/dtzx-memory/
+项目已通过 Cloudflare Workers 自动部署。每次向 `main` 分支提交代码，Cloudflare 都会自动构建并发布最新版。
 
 ## 功能
 
