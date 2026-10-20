@@ -86,6 +86,10 @@ function renderTimeline() {
 
 function setupTimeline(rail, videos) {
   let down = false, startX = 0, startScroll = 0;
+  const scrubber = $('#timelineScrubber');
+  scrubber.min = 0; scrubber.max = Math.max(0, videos.length - 1); scrubber.value = 0;
+  scrubber.oninput = () => scrollToTimelineIndex(+scrubber.value, false);
+  scrubber.onchange = () => scrollToTimelineIndex(+scrubber.value, true);
   rail.onpointerdown = e => { down = true; startX = e.clientX; startScroll = rail.scrollLeft; rail.classList.add('dragging'); rail.setPointerCapture(e.pointerId); };
   rail.onpointermove = e => { if (down) rail.scrollLeft = startScroll - (e.clientX - startX) * 1.3; };
   rail.onpointerup = () => { down = false; rail.classList.remove('dragging'); };
@@ -100,9 +104,9 @@ function setupTimeline(rail, videos) {
   setupDial(videos, index => scrollToTimelineIndex(index));
 }
 
-function scrollToTimelineIndex(index) {
+function scrollToTimelineIndex(index, smooth = true) {
   const rail = $('#timelineRail'); const card = $$('.timeline-card', rail)[index];
-  if (card) rail.scrollTo({ left: card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
+  if (card) rail.scrollTo({ left: card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto' });
 }
 
 function updateTimelineFocus(index, videos) {
@@ -112,6 +116,10 @@ function updateTimelineFocus(index, videos) {
   $('#activeGrade').textContent = `${video.cohort_grade} · ${gradeCopy[video.cohort_grade] || '记忆'}`;
   $('#dialYear').textContent = year; $('#dialMonth').textContent = month ? `${month}月` : '';
   const progress = videos.length <= 1 ? 0 : index / (videos.length - 1);
+  const scrubber = $('#timelineScrubber');
+  scrubber.max = Math.max(0, videos.length - 1); scrubber.value = index;
+  scrubber.style.setProperty('--scrub-progress', `${progress * 100}%`);
+  $('#timelinePosition').textContent = `${index + 1} / ${videos.length}`;
   $('.dial-hand').style.transform = `rotate(${progress * 300 - 150}deg)`;
   $('#railProgress').style.width = `${Math.max(3, progress * 100)}%`;
   $('#timeDial').setAttribute('aria-valuenow', index);
