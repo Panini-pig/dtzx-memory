@@ -1,0 +1,63 @@
+name: Deploy High School Memories
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "site/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sync complete static website
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          base="https://high-school-memories.lofty-skunk-3770.chatgpt.site"
+          for file in index.html styles.css app.js videos.json; do
+            curl --fail --location --retry 3 "$base/$file" --output "site/$file"
+          done
+          touch site/.nojekyll
+
+      - name: Save synchronized source files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync deployed website source"
+            git push
+          fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
