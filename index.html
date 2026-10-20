@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="高中回忆录——2022级高中三年视频记忆目录" />
+  <meta name="theme-color" content="#12100e" />
+  <title>高中回忆录</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark">忆</span>
+      <span>高中回忆录</span>
+    </a>
+    <nav class="nav-switch" aria-label="目录视图">
+      <button class="nav-item active" data-view="timeline">时间长廊</button>
+      <button class="nav-item" data-view="classes">班级大事</button>
+      <button class="nav-item" data-view="events">事件图谱</button>
+    </nav>
+    <button class="search-toggle" id="searchToggle" aria-label="搜索视频">⌕</button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">JIANGSU DONGTAI HIGH SCHOOL · 2022—2025</p>
+        <h1>高中<br><em>回忆录</em></h1>
+        <p class="hero-lead">把散落在镜头里的三年，重新排成一条可以触摸的时间。</p>
+        <div class="hero-stats" id="heroStats" aria-label="档案统计"></div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit-ring ring-one"></div>
+        <div class="orbit-ring ring-two"></div>
+        <div class="orbit-center">
+          <span>2022</span><i></i><span>2025</span>
+        </div>
+        <span class="orbit-note note-a">高一 · 初见</span>
+        <span class="orbit-note note-b">高二 · 盛夏</span>
+        <span class="orbit-note note-c">高三 · 远行</span>
+      </div>
+    </section>
+
+    <section class="controls-wrap" aria-label="筛选工具">
+      <div class="search-panel" id="searchPanel">
+        <label for="searchInput">在 139 段记忆里寻找</label>
+        <input id="searchInput" type="search" placeholder="输入标题、班级、活动或人物…" autocomplete="off" />
+      </div>
+      <div class="filter-row">
+        <div class="filter-group" id="gradeFilters" aria-label="按年级筛选">
+          <button class="filter-chip active" data-grade="全部">全部年级</button>
+          <button class="filter-chip" data-grade="高一">高一</button>
+          <button class="filter-chip" data-grade="高二">高二</button>
+          <button class="filter-chip" data-grade="高三">高三</button>
+          <button class="filter-chip" data-grade="毕业后">毕业后</button>
+        </div>
+        <div class="result-count" id="resultCount">正在整理记忆…</div>
+      </div>
+    </section>
+
+    <section class="view active" id="timelineView" data-view-panel="timeline">
+      <div class="section-heading">
+        <div><p class="section-index">01 / TIME</p><h2>时间长廊</h2></div>
+        <p>拖动胶片，或转动右侧刻度盘。每一个刻度，都会牵出当时的画面。</p>
+      </div>
+      <div class="timeline-stage">
+        <div class="timeline-main">
+          <div class="timeline-date"><span id="activeMonth">2022 · 08</span><small id="activeGrade">高一 · 初见</small></div>
+          <div class="timeline-rail" id="timelineRail" tabindex="0" aria-label="可拖动的视频时间线"></div>
+          <div class="timeline-hint"><span>← 拖动浏览 →</span><span class="rail-progress"><i id="railProgress"></i></span></div>
+        </div>
+        <div class="time-dial-wrap">
+          <div class="time-dial" id="timeDial" role="slider" aria-label="旋转时间刻度盘" aria-valuemin="0" aria-valuemax="1" tabindex="0">
+            <div class="dial-ticks"></div>
+            <div class="dial-hand"></div>
+            <div class="dial-core"><strong id="dialYear">2022</strong><span id="dialMonth">08月</span></div>
+          </div>
+          <p>滚轮 / 拖动转盘</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="classesView" data-view-panel="classes">
+      <div class="section-heading">
+        <div><p class="section-index">02 / CLASS</p><h2>班级大事</h2></div>
+        <p>分班之后，我们有了不同的门牌，也仍在同一段青春里相逢。</p>
+      </div>
+      <div class="class-tabs" id="classTabs"></div>
+      <div class="feature-banner" id="classFeature"></div>
+      <div class="video-grid" id="classGrid"></div>
+    </section>
+
+    <section class="view" id="eventsView" data-view-panel="events">
+      <div class="section-heading">
+        <div><p class="section-index">03 / EVENT</p><h2>事件图谱</h2></div>
+        <p>把三年的声音按性质归档：奔跑、歌唱、课堂、告别，以及没有名字的日常。</p>
+      </div>
+      <div class="event-map" id="eventMap"></div>
+      <div class="event-summary" id="eventSummary"></div>
+      <div class="video-grid" id="eventGrid"></div>
+    </section>
+
+    <section class="closing">
+      <p>“后来才明白，所谓青春，就是在还不知道珍贵的时候，已经拥有了全部。”</p>
+      <div><span>2022</span><i></i><span>2025</span></div>
+    </section>
+  </main>
+
+  <dialog class="player-dialog" id="playerDialog">
+    <div class="player-shell">
+      <button class="dialog-close" id="dialogClose" aria-label="关闭播放器">×</button>
+      <div class="player-frame-wrap"><iframe id="playerFrame" title="哔哩哔哩视频播放器" allowfullscreen scrolling="no" frameborder="0"></iframe></div>
+      <div class="player-meta">
+        <div><span id="playerDate"></span><h3 id="playerTitle"></h3></div>
+        <a id="playerLink" target="_blank" rel="noopener noreferrer">在哔哩哔哩打开 ↗</a>
+      </div>
+    </div>
+  </dialog>
+
+  <template id="videoCardTemplate">
+    <article class="video-card">
+      <button class="cover-button" aria-label="播放视频">
+        <img loading="lazy" referrerpolicy="no-referrer" alt="" />
+        <span class="duration"></span><span class="play-icon">▶</span>
+      </button>
+      <div class="card-copy"><div class="card-kicker"></div><h3></h3><div class="card-tags"></div></div>
+    </article>
+  </template>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
