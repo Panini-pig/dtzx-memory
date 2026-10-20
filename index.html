@@ -69,6 +69,11 @@
         <div class="timeline-main">
           <div class="timeline-date"><span id="activeMonth">2022 · 08</span><small id="activeGrade">高一 · 初见</small></div>
           <div class="timeline-rail" id="timelineRail" tabindex="0" aria-label="可拖动的视频时间线"></div>
+          <div class="timeline-scrubber">
+            <span aria-hidden="true">首映</span>
+            <input id="timelineScrubber" type="range" min="0" max="1" value="0" step="1" aria-label="滑动切换时间线视频" />
+            <output id="timelinePosition" for="timelineScrubber">1 / 1</output>
+          </div>
           <div class="timeline-hint"><span>← 拖动浏览 →</span><span class="rail-progress"><i id="railProgress"></i></span></div>
         </div>
         <div class="time-dial-wrap">
